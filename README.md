@@ -6,7 +6,7 @@ Au cours des 5 derniers jours, j'ai travaillé assidûment sur ce projet. L'appl
 
 1. Assurez-vous d'avoir **composer** et **Symfony** installés sur votre machine. Si vous n'avez pas encore installé composer, exécutez cette commande : `composer install`
 
-2. Si vous utilisez **Xampp**, placez le projet dans le dossier `htdocs`. Si vous ne l'utilisez pas, vous pouvez tout de même lancer le projet à l'aide de la console de VS Code. Pour cela, démarrez le serveur Symfony avec la commande : `symfony server:start`
+2. Si vous utilisez **Xampp**, placez le projet dans le dossier `htdocs`. Vous pouvez tout de même lancer le projet à l'aide de la console de VS Code sans avoir mit le projet dasn htdocs. Pour cela, démarrez le serveur Symfony avec la commande : `symfony server:start`
 
 
 3. Assurez-vous de configurer la `Database_url` dans le fichier `.env` de votre projet Symfony pour qu'il corresponde à votre gestionnaire de base de données.
