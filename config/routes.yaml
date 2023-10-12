@@ -1,3 +1,16 @@
 controllers:
     resource: ../src/Controller/
     type: attribute
+
+
+simulate_periodically:
+    path: '/simulate-periodically'
+    controller: 'App\Controller\HomeController::simulatePeriodically'
+    methods: ['POST']
+
+about:
+    path: /aboutme
+    defaults:
+        _controller: 'Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction'
+        template: 'info/aboutme.html.twig'
+    

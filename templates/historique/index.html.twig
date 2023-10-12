@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Historique des Simulations{% endblock %}
+
+{% block body %}
+<div id="layoutSidenav_content">
+    <div class="container mt-4">
+        <div class="card mb-4 shadow">
+            <div class="card-header bg-primary text-white">
+                <i class="fas fa-history me-2"></i>
+                Historique des Simulations
+            </div>
+
+            <!-- Barre de recherche -->
+            <div class="card-body">
+                <form method="get" action="{{ path('app_historique_search') }}">
+                    <div class="input-group mb-3">
+                        <input type="text" name="term" id="searchInput" class="form-control" placeholder="Rechercher..." value="{{ searchTerm }}" aria-label="Rechercher" aria-describedby="search-button">
+                        <div class="input-group-append">
+                            <button class="btn btn-secondary" type="submit" id="search-button"><i class="fas fa-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Tableau -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th class="text-center" scope="col">Appareils</th>
+                            <th class="text-center" scope="col">Température (en °)</th>
+                            <th class="text-center" scope="col">Vitesse (en Mbit)</th>
+                            <th class="text-center" scope="col">Flux (en o/s)</th>
+                            <th class="text-center" scope="col">Énergie (en W/h)</th>
+                            <th class="text-center" scope="col">Panne</th>
+                            <th class="text-center" scope="col">Activé à</th>
+                            <th class="text-center" scope="col">Durée</th>
+                            <th class="text-center" scope="col">Module.Id</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for donnee in donnees %}
+                            <tr>
+                                <th class="text-center" scope="row">{{ donnee.getId() }}</th>
+                                <td class="text-center" >{{ donnee.getNsimul() }}</td>
+                                <td class="text-center" >{{ donnee.getTemperature() }}</td>
+                                <td class="text-center" >{{ donnee.getVelocity() }}</td>
+                                <td class="text-center" >{{ donnee.getFlow() }}</td>
+                                <td class="text-center" >{{ donnee.getEnergy() }}</td>
+                                <td class="text-center" >{{ donnee.getFailure() }}</td>
+                                <td class="text-center" >{{ donnee.getStart()|date('d-m-Y H:i:s') }}</td>
+                                <td class="text-center" >{{ donnee.getDuration()|date('H:i:s') }}</td>
+                                <td class="text-center" >{{ donnee.getModuleId().getId() }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="card-footer">
+                {{ knp_pagination_render(donnees) }}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{{ asset('js/barre.js') }}"></script>
+{% endblock %}

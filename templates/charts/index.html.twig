@@ -1,0 +1,103 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulation d'état de fonctionnement{% endblock %}
+
+{% block body %}
+<div id="layoutSidenav_content">
+
+    <div class="container my-5">
+        <h2 class="mb-4">Simulation d'état de fonctionnement</h2>
+        
+        <!-- Sélecteur d'appareils -->
+        <div class="form-group">
+            <label for="moduleSelector">Choisir un appareil :</label>
+            <select id="moduleSelector" class="form-control w-auto">
+                <option value="all">Tous les modules</option>
+                {% for module in modules %}
+                    <option value="{{ module.getId }}">{{ module.getNom }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <!-- Canvas pour le graphique -->
+        <div class="chart-container mt-4">
+            <canvas id="myChart"></canvas>
+        </div>
+    </div>
+
+    {% block javascripts %}
+        {{ parent() }}
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const donnees = {{ donnees|json_encode()|raw }};
+                const ctx = document.getElementById('myChart').getContext('2d');
+
+                let updateGraph = (filteredData) => {
+                    let appareils = filteredData.map(d => d.Nsimul);
+                    let temperatures = filteredData.map(d => d.temperature);
+                    let velocities = filteredData.map(d => d.velocity);
+                    let energies = filteredData.map(d => d.energy);
+                    let failures = filteredData.map(d => d.failure ? d.temperature : null);
+
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: appareils,
+                            datasets: [{
+                                label: 'Température (en °)',
+                                data: temperatures,
+                                backgroundColor: 'rgba(86, 204, 242, 0.2)',
+                                borderColor: 'rgba(86, 204, 242, 1)',
+                                borderWidth: 2,
+                                fill: true
+                            },
+                            {
+                                label: 'Vitesse (en Mbit)',
+                                data: velocities,
+                                backgroundColor: 'rgba(221, 255, 255, 0.3)',
+                                borderColor: 'rgba(242, 85, 96, 1)',
+                                borderWidth: 2,
+                                fill: true
+                            },
+                            {
+                                label: 'Énergie (en W/h)',
+                                data: energies,
+                                backgroundColor: 'rgba(242, 204, 85, 0.2)',
+                                borderColor: 'rgba(242, 204, 85, 1)',
+                                borderWidth: 2,
+                                fill: true
+                            },
+                            {
+                                label: 'Pannes',
+                                data: failures,
+                                backgroundColor: 'rgba(50, 50, 50, 0.4)',
+                                borderColor: 'rgba(50, 50, 50, 1)',
+                                borderWidth: 2,
+                                fill: false,
+                                pointRadius: 6,
+                                pointHoverRadius: 8,
+                                pointBackgroundColor: 'red',
+                                pointBorderColor: 'red'
+                            }]
+                        }
+                    });
+                };
+
+                document.getElementById('moduleSelector').addEventListener('change', function() {
+                    let selectedModuleId = this.value;
+                    let filteredData = donnees.filter(d => {
+                        if (selectedModuleId === "all") return true;
+                        return d.moduleId == selectedModuleId; 
+                    });
+                    updateGraph(filteredData);
+                });
+
+                updateGraph(donnees);
+            });
+        </script>
+    {% endblock %}
+</div>
+{% endblock %}
