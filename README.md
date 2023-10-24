@@ -9,8 +9,6 @@ Au cours des 5 derniers jours, j'ai travaillé assidûment sur ce projet. L'appl
 2. Si vous utilisez **Xampp**, placez le projet dans le dossier `htdocs`. Vous pouvez tout de même lancer le projet à l'aide de la console de VS Code sans avoir mit le projet dans htdocs. Pour cela, démarrez le serveur Symfony avec la commande : `symfony server:start`
 
 3. Pour que les notification s'affiche a l'aide du bundle toastr vous devez l'installer avec la commande suivante : `composer require symfony/ux-toastr`
-4. 
-
 
 
 5. Assurez-vous de configurer la `Database_url` dans le fichier `.env` de votre projet Symfony pour qu'il corresponde à votre gestionnaire de base de données.
